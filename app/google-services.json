@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "526275670522",
+    "firebase_url": "https://epicchatstories2.firebaseio.com",
+    "project_id": "epicchatstories2",
+    "storage_bucket": "epicchatstories2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526275670522:android:a92a6364e66fee21",
+        "android_client_info": {
+          "package_name": "com.jaystiqs.jaydahstudios.epicchatstories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526275670522-735v7vql6vv3tsf1qm422ar49qbmlpcb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jaystiqs.jaydahstudios.epicchatstories",
+            "certificate_hash": "31397d6c9dfbd7369aca2057db41f4e9a42c93b4"
+          }
+        },
+        {
+          "client_id": "526275670522-t2ftnpvi86t4c2jk6d4rv71mfahep51s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7lSeB2q7Q7JCyhoB_x3RufynLes0R4gI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526275670522-t2ftnpvi86t4c2jk6d4rv71mfahep51s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
