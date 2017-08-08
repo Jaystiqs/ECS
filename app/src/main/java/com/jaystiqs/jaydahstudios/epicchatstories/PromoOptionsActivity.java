@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +89,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
     @Override
     public void onRewarded(RewardItem rewardItem) {
         Log.i(TAG, "onRewarded: onRewarded");
+        mAd.destroy(this);
     }
 
     @Override
@@ -95,6 +97,17 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promooptions);
         Log.d(TAG, "onCreate:  Started");
+
+
+//        ------------------------------Initialize mobile Ad--------------------------------------  //
+
+        MobileAds.initialize(getApplicationContext(),"ca-app-pub-3940256099942544/5224354917");
+        // Get reference to singleton RewardedVideoAd object
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        loadRewardedVideoAd();
+
+//        ------------------------------End Initialize mobile Ad----------------------------------  //
+
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -104,22 +117,26 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         tEditor = tPreferences.edit();
         checkTimerSharedPreferences();
 
+
         final Button watchAdBtn, reload;
         final TextView adHint;
+        final ProgressBar progressLoader;
 
         watchAdBtn = (Button) findViewById(R.id.watchAdBtnPromo);
         watchAdBtn.setEnabled(false);
         countdownTimer = (TextView) findViewById(R.id.countdownTimer);
+        progressLoader = (ProgressBar) findViewById(R.id.progressLoader);
+        progressLoader.setVisibility(View.VISIBLE);
+
         adHint = (TextView) findViewById(R.id.adHint);
+
         reload = (Button) findViewById(R.id.reload);
+        reload.setVisibility(View.INVISIBLE);
         reload.setEnabled(false);
 
+
+
 //-------------------------------Timer Code Start-------------------------------------------------/
-//        startService(new Intent(this, BroadcastService.class));
-//        Log.i(TAG, "Started service");
-
-//-------------------------------Timer Code End--------------------------------------------------/
-
 
         checkSavedTimeSharedPreferences();
         if(miliseconds != 1800000)
@@ -127,7 +144,6 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
             miliseconds = miliseconds-timeElapsed;
             Log.i(TAG, "Time Elapsed: "+ timeElapsed);
         }
-
 
         countdownTimer = (TextView) findViewById(R.id.countdownTimer);
         timer = new CountDownTimer(miliseconds,1000){
@@ -142,7 +158,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
 
                 miliseconds = ((int)millisUntilFinished);
-                Log.i(TAG, "Time Tick: "+ miliseconds);
+//                Log.i(TAG, "Time Tick: "+ miliseconds);
             }
 
             @Override
@@ -161,22 +177,21 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
             }
         }.start();
 
-
-//        ----------------------------------------AD Section ---------------------------------------------------
-//        ------------------------------------------------------------------------------------------------------
+//-------------------------------Timer Code End--------------------------------------------------/
 
 
-        MobileAds.initialize(getApplicationContext(),"ca-app-pub-3940256099942544/5224354917");
-        // Get reference to singleton RewardedVideoAd object
-        mAd = MobileAds.getRewardedVideoAdInstance(this);
-        loadRewardedVideoAd();
+
+
 
         mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-                Toast.makeText(getBaseContext(),"Ad successfully loaded. Tap button to play!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"AD SUCCESSFULLY LOADED. TAP THE BUTTON TO PLAY!", Toast.LENGTH_SHORT).show();
                 watchAdBtn.setEnabled(true);
                 adHint.setText("Ad Loaded! Tap the button.");
+                reload.setEnabled(false);
+                reload.setVisibility(View.INVISIBLE);
+                progressLoader.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -219,7 +234,10 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
-                Toast.makeText(getBaseContext(),"Ad failed to load. Tap Reload", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"AD FAILED TO LOAD. TAP RELOAD", Toast.LENGTH_SHORT).show();
+                adHint.setText("OOPS! TAP RELOAD.");
+                progressLoader.setVisibility(View.INVISIBLE);
+                reload.setVisibility(View.VISIBLE);
                 reload.setEnabled(true);
             }
         });
@@ -239,11 +257,12 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
             @Override
             public void onClick(View v) {
                 loadRewardedVideoAd();
+                adHint.setText("RELOADING...");
+                reload.setVisibility(View.INVISIBLE);
+                progressLoader.setVisibility(View.VISIBLE);
             }
         });
 
-//        ---------------------------------------- End AD Section ----------------------------------------------
-//        ------------------------------------------------------------------------------------------------------
 
     }
 
@@ -305,16 +324,6 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
 //        Log.i(TAG, "Registered broacast receiver");
     }
 
-//    @Override
-//    public void onStop() {
-//        try {
-//            unregisterReceiver(br);
-//        } catch (Exception e) {
-//            // Receiver was probably already stopped in onPause()
-//        }
-//        super.onStop();
-//    }
-
     @Override
     public void onDestroy() {
 //        stopService(new Intent(this, BroadcastService.class));
@@ -323,36 +332,6 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         super.onDestroy();
     }
 
-//    static class CheckNetworkTime extends AsyncTask<Void, Void, Long> {
-//
-//        //NTP server list: http://tf.nist.gov/tf-cgi/servers.cgi
-////    public static final String TIME_SERVER = "time-c.nist.gov";
-//        private static final String TIME_SERVER = "time.nist.gov";
-//        private long networkTime;
-//
-//        @Override
-//        protected Long doInBackground(Void... params) {
-//            try {
-//                networkTime = returnNetworkTime();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return networkTime;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Long aLong) {
-//            super.onPostExecute(aLong);
-//        }
-//
-//        private static long returnNetworkTime() throws IOException{
-//            NTPUDPClient timeClient = new NTPUDPClient();
-//            InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-//            TimeInfo timeInfo = timeClient.getTime(inetAddress);
-//            return timeInfo.getMessage().getReceiveTimeStamp().getTime();
-//
-//        }
-//    }
 }
 
 

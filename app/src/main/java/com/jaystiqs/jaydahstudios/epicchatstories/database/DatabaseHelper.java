@@ -3,9 +3,14 @@ package com.jaystiqs.jaydahstudios.epicchatstories.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.jaystiqs.jaydahstudios.epicchatstories.model.ChatModel;
+import com.jaystiqs.jaydahstudios.epicchatstories.model.ListCount;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Jaystiqs on 7/13/2017.
@@ -51,22 +56,60 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         ChatModel chat = null;
         openDatabase();
-        Cursor cursor = mDatabase.rawQuery("SELECT b.id, a.actorName, b.dialogueContent ,a.actorPlacement FROM actors a LEFT JOIN dialogue b ON a.id = b.actorId WHERE b.id ="+id+" ORDER BY b.id", null);
 
-        cursor.moveToFirst();
+        try{
+            Cursor cursor = mDatabase.rawQuery("SELECT b.id, a.actorName, b.dialogueContent ,a.actorPlacement FROM actors a LEFT JOIN dialogue b ON a.id = b.actorId WHERE b.id ="+id+" ORDER BY b.id", null);
+
+            cursor.moveToFirst();
 //        cursor.moveToNext();
-        while (!cursor.isAfterLast()) {
-            System.out.println(cursor.getInt(0) + " " + cursor.getInt(1) + " " + cursor.getInt(2) + " " +  cursor.getInt(3));
+            while (!cursor.isAfterLast()) {
+                System.out.println(cursor.getInt(0) + " " + cursor.getInt(1) + " " + cursor.getInt(2) + " " +  cursor.getInt(3));
 
-            chat = new ChatModel(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getInt(3));
+                chat = new ChatModel(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getInt(3));
 
-            cursor.moveToNext();
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }catch(SQLiteException e)
+        {
+            Log.e(TAG, "getListChat: ", e);
         }
-        cursor.close();
-        closeDatabase();
 
+        closeDatabase();
         return chat;
     }
+
+
+
+    public ListCount getStoryData(int id) {
+
+        ListCount storyData = null;
+        openDatabase();
+
+        try{
+            Cursor cursor = mDatabase.rawQuery("SELECT  COUNT (b.dialogueContent), a.storyName FROM stories a  LEFT JOIN dialogue b ON a.id = b.storyId WHERE a.id ="+id+"", null);
+
+            cursor.moveToFirst();
+//        cursor.moveToNext();
+            while (!cursor.isAfterLast()) {
+//                System.out.println(cursor.getInt(0) + " " + cursor.getInt(1) + " " + cursor.getInt(2) + " " +  cursor.getInt(3));
+
+                storyData = new ListCount(cursor.getInt(0), cursor.getString(1));
+
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }catch(SQLiteException e)
+        {
+            Log.e(TAG, "getListChat: ", e);
+        }
+
+        closeDatabase();
+        return storyData;
+    }
+
+
+
 
     public ChatModel getChat(int id){
         ChatModel chat = null;

@@ -154,14 +154,21 @@ public class OptionsMenuActivity extends AppCompatActivity {
         stories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"More stories coming soon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(OptionsMenuActivity.this, StoriesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+
             }
         });
 
         storiesImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"More stories coming soon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(OptionsMenuActivity.this, StoriesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
 

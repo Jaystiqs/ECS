@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,6 +28,9 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jaystiqs.jaydahstudios.epicchatstories.adapter.CustomAdapter;
 import com.jaystiqs.jaydahstudios.epicchatstories.database.DatabaseHelper;
 import com.jaystiqs.jaydahstudios.epicchatstories.model.ChatModel;
+import com.jaystiqs.jaydahstudios.epicchatstories.model.ListCount;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,27 +44,33 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEditor;
 
     private int count = 1; //Count for query with respect to row retreival
+    private int storyId = 1; //Set as 1 for first story
+    private int storyCount;
     private CustomAdapter adapter;
     private DatabaseHelper mDBHelper;
     private List<ChatModel> lstChat = new ArrayList<>();
-    private List<ChatModel> newChat = new ArrayList<>();
-    int limit = 38;
-    int limit1 = 74;
-    int limit2 = 115;
-    ImageView batteryIconImg;
+    private int limit = 38;
+    private int limit1 = 74;
+    private int limit2 = 115;
+    private ImageView batteryIconImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView settingsIcon;
+        TextView storyNameTxt;
+
+
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // ------------------------------------------------------------------------------------
 
-        mDBHelper = new DatabaseHelper(this);
-        ImageView settingsIcon;
+
 
         //Checks if DB exists
+        mDBHelper = new DatabaseHelper(this);
         File database =  getApplicationContext().getDatabasePath(DatabaseHelper.DBNAME);
         if(!database.exists()){
             mDBHelper.getReadableDatabase();
@@ -68,17 +78,27 @@ public class MainActivity extends AppCompatActivity {
             if(copyDatabase(this)){
                 Toast.makeText(this, "All ready. Press Next to start!", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(this, "Copy error", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Database unable to initialize. Restart App.", Toast.LENGTH_LONG).show();
             }
         }
+        // ------------------------------------------------------------------------------------
+
+
+        // Set name of the story
+        storyNameTxt = (TextView) findViewById(R.id.storyNameTxt);
+        storyNameTxt.setText("This story : "+ getStoryName());
+
+        //Story count
+        storyCount = getStoryCount();
 
         // Initialize shared preferences
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
+        mEditor.apply();
         checkSharedPreferences();
+        // ------------------------------------------------------------------------------------
 
-
-//      Get intents data
+        // Get intents data
         Intent intent = getIntent();
         int counter = intent.getIntExtra("counter", 0);
         String updateCount = intent.getStringExtra("updateCount");
@@ -86,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         if("add".equals(updateCount))
         {
             count++;
-            Toast.makeText(this, "Rewarded!!! Enjoy the story!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "REWARDED!!! ENJOY THE STORY!", Toast.LENGTH_LONG).show();
         }
 
         if(counter == 1){
                 count = counter;
-                Toast.makeText(this, "Rewind successful. Enjoy the story!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "REWIND SUCCESSFUL. ENJOY THE STORY!!", Toast.LENGTH_LONG).show();
         }
 //      End Get intents data
 
@@ -138,50 +158,81 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ChatModel setUpMessage(){
-        Log.d(TAG, "setUpMessage: Exec");
-        return mDBHelper.getListChat(count);
+    private ListCount storyData(){
+
+        return mDBHelper.getStoryData(storyId);
 
     }
 
+    private String getStoryName(){
+        String storyName;
+        ListCount storyDets = storyData();
+        storyName = storyDets.getStoryName();
+
+        return storyName;
+    }
+
+    private int getStoryCount(){
+        int storyCount;
+        ListCount storyDets = storyData();
+        storyCount = storyDets.getCount();
+
+        return storyCount;
+    }
+
+
+    //Model for chat format
+    private ChatModel setUpMessage(){
+
+        return mDBHelper.getListChat(count);
+    }
+
+    //when Next is tapped
     public void nextClicked(View view){
         Log.d(TAG, "nextClicked: Is Clicked");
 
         checkBatteryStatus(count);
 
-        if(count == limit || count == limit1 || count == limit2){
-            Log.d(TAG, "nextClicked: Limit Reached");
+            if (count == limit || count == limit1 || count == limit2) {
+//            Log.d(TAG, "nextClicked: Limit Reached");
 
-            Intent intent = new Intent(MainActivity.this, PromoOptionsActivity.class);
-            startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, PromoOptionsActivity.class);
+                startActivity(intent);
 
-        }else{
-            loadList(null);
-        }
-
+            } else {
+                loadList(null);
+                Log.i(TAG, "storyCount: "+ storyCount);
+            }
     }
 
-    //load lst items into listview
+    //load list items into listview
     public void loadList(View view){
         try{
             ChatModel chat = setUpMessage();
-            lstChat.add(chat);
-            final ListView lstView = (ListView)findViewById(R.id.listView);
-            final CustomAdapter adapter = new CustomAdapter(lstChat,this);
-            lstView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-            lstView.setAdapter(adapter);
+            if(chat != null){
 
-            adapter.registerDataSetObserver(new DataSetObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    lstView.setSelection(adapter.getCount() - 1);
-                }
-            });
+                lstChat.add(chat);
+                final ListView lstView = (ListView)findViewById(R.id.listView);
+                final CustomAdapter adapter = new CustomAdapter(lstChat,this);
+                lstView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                lstView.setAdapter(adapter);
 
-            adapter.notifyDataSetChanged();
-            Log.i(TAG, "Counter is: "+count);
-            count++;
+                adapter.registerDataSetObserver(new DataSetObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        lstView.setSelection(adapter.getCount() - 1);
+                    }
+                });
+
+                adapter.notifyDataSetChanged();
+                Log.i(TAG, "Counter is: "+count);
+                count++;
+
+            }else{
+
+                Toast.makeText(this, "END OF STORY", Toast.LENGTH_LONG).show();
+            }
         }catch(Exception e) {
             Log.i(TAG, "loadList: "+e.toString());
             //e.toString();
@@ -223,12 +274,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkBatteryStatus(int count){
 
-//        if(count>limit){
-//            limit = limit1;
-//        }else if(count>limit){
-//            limit = limit2;
-//        }
-
         if(count == Math.floor(limit/3) || count == Math.floor((limit1-limit)/3) || count == Math.floor((limit2-limit1)/3)){
             batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
             batteryIconImg.setImageResource(R.drawable.battery2);
@@ -257,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(getBaseContext(), "Press once again to exit!",
+            Toast.makeText(getBaseContext(), "Press BACK once again to exit!",
                     Toast.LENGTH_SHORT).show();
         }
         back_pressed = System.currentTimeMillis();

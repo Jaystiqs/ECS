@@ -19,6 +19,11 @@ android {
     }
 }
 
+ext {
+    SUPPORT_LIB_VER = '25.3.1'
+    GOOGLE_LIB_VER = '10.2.6'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -26,18 +31,33 @@ dependencies {
     })
 
     //Adding Library
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.github.lguipeng:BubbleView:1.0.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
-    compile 'com.google.firebase:firebase-ads:10.0.1'
-    compile 'commons-net:commons-net:3.6'
+//    compile 'com.android.support:appcompat-v7:25.3.1'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+//    compile 'com.github.lguipeng:BubbleView:1.0.1'
+//    compile 'com.google.firebase:firebase-core:10.0.1'
+//    compile 'com.google.firebase:firebase-crash:10.0.1'
+//    compile 'com.google.firebase:firebase-messaging:10.0.1'
+//    compile 'com.google.firebase:firebase-ads:10.0.1'
+//    compile 'commons-net:commons-net:3.6'
+//    compile 'com.google.firebase:firebase-appindexing:10.0.1'
+//    compile 'com.google.android.gms:play-services-ads:$GOOGLE_LIB_VER'
+
+
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VER"
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile "com.github.lguipeng:BubbleView:1.0.1"
+    compile "com.google.firebase:firebase-core:$GOOGLE_LIB_VER"
+    compile "com.google.firebase:firebase-crash:$GOOGLE_LIB_VER"
+    compile "com.google.firebase:firebase-messaging:$GOOGLE_LIB_VER"
+    compile "com.google.firebase:firebase-ads:$GOOGLE_LIB_VER"
+    compile "commons-net:commons-net:3.6"
+    compile "com.google.firebase:firebase-appindexing:$GOOGLE_LIB_VER"
+    compile "com.google.android.gms:play-services-ads:$GOOGLE_LIB_VER"
+    compile "com.android.support:design:$SUPPORT_LIB_VER"
+    compile "com.android.support:cardview-v7:$SUPPORT_LIB_VER"
+    compile 'com.github.bumptech.glide:glide:4.0.0'
     testCompile 'junit:junit:4.12'
 }
-
-
 
 
 

@@ -3,7 +3,8 @@
     package="com.jaystiqs.jaydahstudios.epicchatstories"
     android:installLocation="preferExternal">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,34 +13,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="com.jaystiqs.jaydahstudios.epicchatstories.Splashscreen"
+            android:name=".Splashscreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.jaystiqs.jaydahstudios.epicchatstories.MainActivity"
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".PromoOptionsActivity"
+            android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".OptionsMenuActivity"
+            android:theme="@style/Theme.Transparent">
+        </activity>
+        <activity android:name=".StoriesActivity"
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.jaystiqs.jaydahstudios.epicchatstories.PromoOptionsActivity"
-            android:theme="@style/Theme.Transparent">
-        </activity>
+        <!-- This meta-data tag is required to use Google Play Services. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.jaystiqs.jaydahstudios.epicchatstories.OptionsMenuActivity"
-            android:theme="@style/Theme.Transparent">
-        </activity>
-
-        <activity android:name="com.jaystiqs.jaydahstudios.epicchatstories.StoriesActivity"
-            android:theme="@style/Theme.Transparent">
-        </activity>
 
     </application>
-
 
 </manifest>

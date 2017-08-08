@@ -51,7 +51,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:textSize="14sp"
-            android:text="It seems you have run out of battery power. Recharge to continue!"
+            android:text="It seems you have run out of Epic Chat Stories battery power. Recharge to continue!"
             android:layout_marginTop="140dp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#dad8d8"/>
@@ -78,6 +78,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="240dp"/>
 
+
+
         <TextView
             android:id="@+id/adHint"
             android:layout_width="wrap_content"
@@ -85,7 +87,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:maxWidth="320dp"
-            android:text="Button not active?\nWait a few seconds for the ad to load."
+            android:text="LOADING AD..."
             android:gravity="center_horizontal"
             android:textColor="#f3f4f3"
             android:textSize="14sp"
@@ -93,6 +95,15 @@
             android:textStyle="italic"
             android:fontFamily="sans-serif-smallcaps"
 
+            />
+
+        <ProgressBar
+            android:id="@+id/progressLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="390dp"
+            style="@style/GenericProgressIndicator"
             />
 
         <Button
