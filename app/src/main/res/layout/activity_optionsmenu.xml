@@ -7,10 +7,9 @@
 
 
     <RelativeLayout
-        android:layout_width="350dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:background="#363636"
-
+        android:background="#202020"
         android:gravity="center_horizontal"
         android:id="@+id/promoPopup"
         android:paddingTop="20dp"
@@ -22,14 +21,16 @@
 
 
         <TextView
-            android:layout_width="350dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:text="Options"
+            android:background="#202020"
             android:fontFamily="sans-serif-smallcaps"
             android:textStyle="bold"
             android:textColor="#ffffff"
             android:maxWidth="300dp"
             android:textSize="30sp"
+            android:textAlignment="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="left"
@@ -37,7 +38,7 @@
 
 
             <RelativeLayout
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginRight="0dp"
@@ -49,24 +50,26 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:src="@drawable/bookstackicon"
-                    android:id="@+id/storiesImg"/>
+                    android:id="@+id/storiesImg"
+                    android:background="#202020"/>
                 <Button
                     android:id="@+id/storiesBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:textSize="16sp"
                     android:text="Stories"
+                    android:background="@android:color/transparent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#202020"/>
+                    android:textColor="#fff"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginRight="0dp"
@@ -82,25 +85,28 @@
                     android:layout_above="@+id/rewindBtn"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:id="@+id/rewindImg"/>
+                    android:id="@+id/rewindImg"
+                    android:background="#202020"/>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:id="@+id/rewindBtn"
                     android:textSize="16sp"
                     android:text="Rewind"
+                    android:background="@android:color/transparent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#202020"/>
+                    android:textColor="#fff"/>
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="220dp"
                 android:layout_marginRight="0dp"
+                android:paddingTop="10dp"
                 android:paddingRight="5dp"
                 android:paddingLeft="5dp"
                 android:layout_alignParentLeft="true"
@@ -110,22 +116,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:src="@drawable/shareicon"
-                    android:id="@+id/shareImg"/>
+                    android:id="@+id/shareImg"
+                    android:background="#202020"/>
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:textSize="16sp"
                     android:text="Share"
                     android:id="@+id/shareBtn"
+                    android:background="@android:color/transparent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#202020"/>
+                    android:textColor="#fff"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="220dp"
                 android:layout_marginRight="0dp"
@@ -137,18 +145,20 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:src="@drawable/apps"
-                    android:id="@+id/appsImg"/>
+                    android:id="@+id/appsImg"
+                    android:background="#202020"/>
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:textSize="16sp"
                     android:text="Apps"
+                    android:background="@android:color/transparent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#202020"
+                    android:textColor="#fff"
                     android:id="@+id/appsBtn"/>
 
             </RelativeLayout>

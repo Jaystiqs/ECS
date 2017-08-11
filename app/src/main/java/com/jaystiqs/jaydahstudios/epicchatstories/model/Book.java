@@ -1,15 +1,21 @@
 package com.jaystiqs.jaydahstudios.epicchatstories.model;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.jaystiqs.jaydahstudios.epicchatstories.R;
+
 /**
  * Created by Jaystiqs on 8/7/2017.
  */
 
 public class Book {
 
-    private String name, description,writer;
+    private String name, description, writer;
     private int pic,rank;
 
-    public Book(String name, String description, int rank, int pic){
+
+    public Book(String name, String description,int rank,int pic){
 
         this.name = name;
         this.description = description;

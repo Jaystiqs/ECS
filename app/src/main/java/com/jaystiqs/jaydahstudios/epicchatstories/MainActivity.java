@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,9 +27,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jaystiqs.jaydahstudios.epicchatstories.adapter.CustomAdapter;
 import com.jaystiqs.jaydahstudios.epicchatstories.database.DatabaseHelper;
 import com.jaystiqs.jaydahstudios.epicchatstories.model.ChatModel;
-import com.jaystiqs.jaydahstudios.epicchatstories.model.ListCount;
-
-import org.w3c.dom.Text;
+import com.jaystiqs.jaydahstudios.epicchatstories.model.StoryInfoModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -72,15 +69,16 @@ public class MainActivity extends AppCompatActivity {
         //Checks if DB exists
         mDBHelper = new DatabaseHelper(this);
         File database =  getApplicationContext().getDatabasePath(DatabaseHelper.DBNAME);
-        if(!database.exists()){
-            mDBHelper.getReadableDatabase();
-            //Copy db
-            if(copyDatabase(this)){
-                Toast.makeText(this, "All ready. Press Next to start!", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(this, "Database unable to initialize. Restart App.", Toast.LENGTH_LONG).show();
-            }
-        }
+        copyDatabase(this);
+//        if(!database.exists()){
+//            mDBHelper.getReadableDatabase();
+//            //Copy db
+//            if(copyDatabase(this)){
+//                Toast.makeText(this, "All ready. Press Next to start!", Toast.LENGTH_LONG).show();
+//            }else{
+//                Toast.makeText(this, "Database unable to initialize. Restart App.", Toast.LENGTH_LONG).show();
+//            }
+//        }
         // ------------------------------------------------------------------------------------
 
 
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 count = counter;
                 Toast.makeText(this, "REWIND SUCCESSFUL. ENJOY THE STORY!!", Toast.LENGTH_LONG).show();
         }
-//      End Get intents data
+        //      End Get intents data
 
         if(count != 1 ){
             int sPCount = count;
@@ -158,15 +156,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ListCount storyData(){
-
+    private StoryInfoModel storyData(){
         return mDBHelper.getStoryData(storyId);
-
     }
 
     private String getStoryName(){
         String storyName;
-        ListCount storyDets = storyData();
+        StoryInfoModel storyDets = storyData();
         storyName = storyDets.getStoryName();
 
         return storyName;
@@ -174,12 +170,11 @@ public class MainActivity extends AppCompatActivity {
 
     private int getStoryCount(){
         int storyCount;
-        ListCount storyDets = storyData();
+        StoryInfoModel storyDets = storyData();
         storyCount = storyDets.getCount();
 
         return storyCount;
     }
-
 
     //Model for chat format
     private ChatModel setUpMessage(){

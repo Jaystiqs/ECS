@@ -208,7 +208,7 @@ public class OptionsMenuActivity extends AppCompatActivity {
     public static void askDialogue(final Activity activity, String title, String msg,
                            DialogInterface.OnClickListener okListener,
                            DialogInterface.OnClickListener cancelListener) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity, R.style.MyDialogTheme);
         alertDialog.setTitle(title);
         alertDialog.setMessage(msg);
         alertDialog.setPositiveButton("YES, REWIND.", okListener);

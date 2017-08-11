@@ -90,6 +90,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
     public void onRewarded(RewardItem rewardItem) {
         Log.i(TAG, "onRewarded: onRewarded");
         mAd.destroy(this);
+        finish();
     }
 
     @Override
@@ -169,7 +170,11 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
                 tEditor.apply();
                 tEditor.putInt("Timer", 1800000);
                 tEditor.apply();
-                timer.cancel();
+
+                if(timer != null){
+                    timer.cancel();
+                }
+
                 Intent intent = new Intent(PromoOptionsActivity.this, MainActivity.class);
                 intent.putExtra("updateCount", updateCount);
                 startActivity(intent);
@@ -208,7 +213,6 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
 
             @Override
             public void onRewardedVideoAdClosed() {
-                Toast.makeText(getBaseContext(),"Ad was closed. Reward lost. Try again.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -234,7 +238,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
-                Toast.makeText(getBaseContext(),"AD FAILED TO LOAD. TAP RELOAD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"FAILED. ↻ TAP RELOAD", Toast.LENGTH_SHORT).show();
                 adHint.setText("OOPS! TAP RELOAD.");
                 progressLoader.setVisibility(View.INVISIBLE);
                 reload.setVisibility(View.VISIBLE);
@@ -303,7 +307,9 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         super.onPause();
         tEditor.putInt("Timer", miliseconds);
         tEditor.commit();
-        timer.cancel();
+        if(timer != null){
+            timer.cancel();
+        }
         this.finish();
     }
 
@@ -312,7 +318,9 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         super.onBackPressed();
         tEditor.putInt("Timer", miliseconds);
         tEditor.commit();
-        timer.cancel();
+        if(timer != null){
+            timer.cancel();
+        }
         this.finish();
     }
 
