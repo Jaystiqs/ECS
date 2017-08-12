@@ -2,6 +2,7 @@ package com.jaystiqs.jaydahstudios.epicchatstories;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 
 public class StoriesActivity extends AppCompatActivity{
     private static final String TAG = "StoriesActivity";
+    private static final int TIME_DELAY = 1700;
+    private static long story_pressed;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -36,25 +39,6 @@ public class StoriesActivity extends AppCompatActivity{
     private BookAdapter bookAdapter;
 
     private int storiesCount;
-
-//    String[] names = {"I Took A Pill In Ibiza", "7 Years", "Pillow Talk", "Work From Home", "Never Forget You", "Don't Let Me Down",
-//            "Love Yourself", "Me, Myself & I", "Cake By The Ocean", "Dangerous Woman", "My House"};
-//
-//    String[] singers = {"Mike Posner", "Lukas Graham", "Zayn", "Fifth Harmony", "Zara Larsson & MNEK", "The Chainsmokers",
-//            "Justin Bieber", "G-Eazy x Bebe Rexha", "DNCE", "Ariana Grande", "Flo Rida"};
-//
-//    int[] pics = {
-//            R.drawable.album1,
-//            R.drawable.album2,
-//            R.drawable.album3,
-//            R.drawable.album4,
-//            R.drawable.album5,
-//            R.drawable.album6,
-//            R.drawable.album7,
-//            R.drawable.album8,
-//            R.drawable.album9,
-//            R.drawable.album10,
-//            R.drawable.album11};
 
     String[] names = new String[storiesCount+1];
     String[] singers = new String[storiesCount+1];
@@ -87,7 +71,6 @@ public class StoriesActivity extends AppCompatActivity{
             pics[i] = getResources().getIdentifier(getStoryImage(), "drawable", getPackageName());
         }
 
-
         //intializing an arraylist called songlist
         bookList = new ArrayList<>();
 
@@ -96,9 +79,6 @@ public class StoriesActivity extends AppCompatActivity{
             Book book = new Book(names[i], singers[i], i + 1, pics[i]);
             bookList.add(book);
         }
-
-
-
 
         //initializing adapter
         bookAdapter = new BookAdapter(bookList);
@@ -110,7 +90,15 @@ public class StoriesActivity extends AppCompatActivity{
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(StoriesActivity.this, "Card at " + position + " is clicked", Toast.LENGTH_SHORT).show();
+                if (story_pressed + TIME_DELAY > System.currentTimeMillis()) {
+
+//                    Toast.makeText(StoriesActivity.this, "Card at " + position + " is clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent=  new Intent(StoriesActivity.this, MainActivity.class);
+                    intent.putExtra("storyIdFromBook", position+1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                story_pressed = System.currentTimeMillis();
             }
         }));
     }
@@ -150,4 +138,6 @@ public class StoriesActivity extends AppCompatActivity{
         Log.i(TAG, "StoryImage: "+storyImage);
         return storyImage;
     }
+
+
 }

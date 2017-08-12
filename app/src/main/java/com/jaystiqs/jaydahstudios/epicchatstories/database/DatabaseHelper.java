@@ -61,13 +61,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    public ChatModel getListChat(int id) {
+    public ChatModel getListChat(int id, int storyId) {
 
         ChatModel chat = null;
         openDatabase();
 
         try{
-            Cursor cursor = mDatabase.rawQuery("SELECT b.id, a.actorName, b.dialogueContent ,a.actorPlacement FROM actors a LEFT JOIN dialogue b ON a.id = b.actorId WHERE b.id ="+id+" ORDER BY b.id", null);
+            Cursor cursor = mDatabase.rawQuery("SELECT b.id, a.actorName, b.dialogueContent ,a.actorPlacement FROM actors a LEFT JOIN dialogue b ON a.id = b.actorId WHERE b.id ="+id+"  AND b.storyId = "+storyId+" ORDER BY b.id", null);
 
             cursor.moveToFirst();
 //        cursor.moveToNext();
@@ -164,7 +164,41 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return chat;
     }
+
+    public List getAdPoints(int storyId){
+
+        ArrayList<Integer> adpoints = new ArrayList<Integer>();
+        openDatabase();
+        Cursor cursor = mDatabase.rawQuery("SELECT num FROM adbreakpoints WHERE storyId= "+storyId+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+
+            adpoints.add(cursor.getInt(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        closeDatabase();
+
+        return adpoints;
     }
+
+    public List getStoryPoints(int storyId){
+
+        ArrayList<Integer> adpoints = new ArrayList<Integer>();
+        openDatabase();
+        Cursor cursor = mDatabase.rawQuery("SELECT num FROM storybreakpoints WHERE storyId= "+storyId+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+
+            adpoints.add(cursor.getInt(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        closeDatabase();
+
+        return adpoints;
+    }
+}
 
 
 

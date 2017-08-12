@@ -42,13 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
     private int count = 1; //Count for query with respect to row retreival
     private int storyId = 1; //Set as 1 for first story
-    private int storyCount;
+    private int storyCount, isStoryBreakPointHolder = 1;
     private CustomAdapter adapter;
     private DatabaseHelper mDBHelper;
     private List<ChatModel> lstChat = new ArrayList<>();
-    private int limit = 38;
-    private int limit1 = 74;
-    private int limit2 = 115;
+    private List <Integer> adbreakPoints = new ArrayList<>();
+    private List <Integer> storybreakPoints = new ArrayList<>();
     private ImageView batteryIconImg;
 
     @Override
@@ -82,13 +81,6 @@ public class MainActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------------------
 
 
-        // Set name of the story
-        storyNameTxt = (TextView) findViewById(R.id.storyNameTxt);
-        storyNameTxt.setText("This story : "+ getStoryName());
-
-        //Story count
-        storyCount = getStoryCount();
-
         // Initialize shared preferences
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
@@ -96,10 +88,20 @@ public class MainActivity extends AppCompatActivity {
         checkSharedPreferences();
         // ------------------------------------------------------------------------------------
 
+        //Story count
+        storyCount = getStoryCount();
+
         // Get intents data
         Intent intent = getIntent();
         int counter = intent.getIntExtra("counter", 0);
+        int storyIdFromBook = intent.getIntExtra("storyIdFromBook", 0);
         String updateCount = intent.getStringExtra("updateCount");
+
+        if(storyIdFromBook != 0){
+            storyId = storyIdFromBook;
+            count = 0;
+            Toast.makeText(this, "THE STORY!", Toast.LENGTH_LONG).show();
+        }
 
         if("add".equals(updateCount))
         {
@@ -113,14 +115,29 @@ public class MainActivity extends AppCompatActivity {
         }
         //      End Get intents data
 
+
+        adbreakPoints = getAdPoints(storyId);
+        storybreakPoints = getStoryPoints(storyId);
+
+
         if(count != 1 ){
             int sPCount = count;
-            for( int i= 1; i<sPCount; i++){
+            Log.i(TAG, "isStoryBreakPointHolder: "+isStoryBreakPointHolder);
+
+            for(int i=0; i < storybreakPoints.size(); i++ ){
+                if(count < storybreakPoints.get(i)){
+                    isStoryBreakPointHolder = 1;
+                    Log.i(TAG, "storybreakPoints -"+ storybreakPoints.get(i));
+                }
+            }
+
+            for( int i= isStoryBreakPointHolder; i<sPCount; i++){
                 count = i;
                 getProgress(null);
             }
             count++;
         }
+
 
         settingsIcon = (ImageView) findViewById(R.id.settingsIconImg);
         settingsIcon.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +148,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         checkBatteryStatus(count);
+
+        // Set name of the story
+        storyNameTxt = (TextView) findViewById(R.id.storyNameTxt);
+        storyNameTxt.setText("- "+ getStoryName()+ " -");
+
+        nextClicked(null);
+
+
     }
 
     private boolean copyDatabase(Context context){
@@ -176,28 +200,44 @@ public class MainActivity extends AppCompatActivity {
         return storyCount;
     }
 
+    private List getAdPoints(int storyId){
+        return mDBHelper.getAdPoints(storyId);
+    }
+    
+    private List getStoryPoints(int storyId){
+        return mDBHelper.getStoryPoints(storyId);
+    }
+
     //Model for chat format
     private ChatModel setUpMessage(){
 
-        return mDBHelper.getListChat(count);
+        return mDBHelper.getListChat(count, storyId);
     }
 
     //when Next is tapped
     public void nextClicked(View view){
         Log.d(TAG, "nextClicked: Is Clicked");
-
         checkBatteryStatus(count);
-
-            if (count == limit || count == limit1 || count == limit2) {
-//            Log.d(TAG, "nextClicked: Limit Reached");
-
-                Intent intent = new Intent(MainActivity.this, PromoOptionsActivity.class);
-                startActivity(intent);
-
-            } else {
-                loadList(null);
-                Log.i(TAG, "storyCount: "+ storyCount);
+        
+//---------------------Check Breakpoints for the Ads----------------------
+        Boolean isAdBreakPoint = false;
+        for(int i=0; i < adbreakPoints.size(); i++ ){
+            if(count == adbreakPoints.get(i)){
+                isAdBreakPoint = true;
             }
+        }
+//-------------------------------------------------------------------------
+        
+        if (isAdBreakPoint) {
+            Intent intent = new Intent(MainActivity.this, PromoOptionsActivity.class);
+            startActivity(intent);
+
+        } else {
+            loadList(null);
+            Log.i(TAG, "storyCount: "+ storyCount);
+        }
+
+
     }
 
     //load list items into listview
@@ -205,6 +245,20 @@ public class MainActivity extends AppCompatActivity {
         try{
             ChatModel chat = setUpMessage();
             if(chat != null){
+
+                //---------------
+                Boolean isStoryBreakPoint = false;
+                for(int i=0; i < storybreakPoints.size(); i++ ){
+                    if(count == storybreakPoints.get(i)){
+                        isStoryBreakPoint = true;
+                        isStoryBreakPointHolder = count;
+                    }
+                }
+
+                if(isStoryBreakPoint){
+                    lstChat.clear();
+                }
+                //---------------
 
                 lstChat.add(chat);
                 final ListView lstView = (ListView)findViewById(R.id.listView);
@@ -224,6 +278,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Counter is: "+count);
                 count++;
 
+
+
+
             }else{
 
                 Toast.makeText(this, "END OF STORY", Toast.LENGTH_LONG).show();
@@ -233,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
             //e.toString();
         }
     }
+
 
     //For saved progress of shared preference
     public void getProgress(View view){
@@ -261,27 +319,33 @@ public class MainActivity extends AppCompatActivity {
     private void checkSharedPreferences(){
         //Check if user has read to a point and has been saved from previous
         int counter = mPreferences.getInt(getString(R.string.story_progress_count), 1);
+        int holder = mPreferences.getInt(getString(R.string.story_progress_start_point), 1);
 
         if(counter != 1){
             count = counter;
         }
+
+        if(holder != 1){
+            isStoryBreakPointHolder = holder;
+        }
+
     }
 
     private void checkBatteryStatus(int count){
 
-        if(count == Math.floor(limit/3) || count == Math.floor((limit1-limit)/3) || count == Math.floor((limit2-limit1)/3)){
-            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
-            batteryIconImg.setImageResource(R.drawable.battery2);
-        }
-        if(count == Math.floor(limit/2) || count == Math.floor((limit1-limit)/3) || count == Math.floor((limit2-limit1)/3)){
-            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
-            batteryIconImg.setImageResource(R.drawable.battery1);
-        }
-
-        if(count == limit || count == limit1 || count == limit2) {
-            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
-            batteryIconImg.setImageResource(R.drawable.batteryempty);
-        }
+//        if(count == Math.floor(limit/3) || count == Math.floor((limit1-limit)/3) || count == Math.floor((limit2-limit1)/3)){
+//            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
+//            batteryIconImg.setImageResource(R.drawable.battery2);
+//        }
+//        if(count == Math.floor(limit/2) || count == Math.floor((limit1-limit)/3) || count == Math.floor((limit2-limit1)/3)){
+//            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
+//            batteryIconImg.setImageResource(R.drawable.battery1);
+//        }
+//
+//        if(count == limit || count == limit1 || count == limit2) {
+//            batteryIconImg = (ImageView) findViewById(R.id.batteryIconImg);
+//            batteryIconImg.setImageResource(R.drawable.batteryempty);
+//        }
 
     }
 
@@ -289,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mEditor.putInt(getString(R.string.story_progress_count), count);
+//        mEditor.putInt(getString(R.string.story_progress_start_point), isStoryBreakPointHolder);
         mEditor.commit();
     }
 

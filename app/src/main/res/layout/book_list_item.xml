@@ -20,6 +20,8 @@
         card_view:cardCornerRadius="10dp"
         card_view:cardUseCompatPadding="true">
 
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -38,110 +40,91 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/album1" />
+                    android:src="@drawable/story1" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#a0ffffff"
-                android:orientation="vertical"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:fadingEdgeLength="20dp"
-                android:requiresFadingEdge="horizontal">
+                android:layout_height="match_parent"
+                android:background="@drawable/story_overlay">
 
-                <TextView
-                    android:id="@+id/tv_song_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_album_cover"
-                    android:gravity="center"
-                    android:text="Pillow Talk"
-                    android:textAllCaps="true"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="3dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_song_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pillow Talk"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="20dp"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_singer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/tv_song_name"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="10dp"
+                        android:text="Zayn"
+                        android:textColor="#fff"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tv_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="ECS Team."
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="0sp" />
+
+                    <Button
+                        android:id="@+id/angry_btn"
+                        android:text="DOUBLE TAP TO READ"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:layout_width="190dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/buttonshape"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="0sp"
+                        android:textStyle="italic" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_singer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/tv_song_name"
-                    android:textAlignment="center"
-                    android:layout_marginTop="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="Zayn"
-                    android:textColor="#1e1e1e"
-                    android:textSize="16sp"
-                    android:textStyle="bold|italic" />
-
-                <TextView
-                    android:id="@+id/tv_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:text="ECS Team."
-                    android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
-                    android:textColor="@color/textSecondary"
-                    android:textSize="0sp" />
-
-                <Button
-                    android:id="@+id/angry_btn"
-                    android:text="READ THIS"
-                    android:textColor="#1e1e1e"
-                    android:textSize="17sp"
-                    android:layout_width="190dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttonshape"
-                    />
-
-                <!--<TextView-->
-                    <!--android:id="@+id/textView"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignTop="@+id/tv_rank"-->
-                    <!--android:layout_toLeftOf="@+id/tv_rank"-->
-                    <!--android:layout_toStartOf="@+id/tv_rank"-->
-                    <!--android:text="# "-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:textSize="0sp"-->
-                    <!--android:textStyle="italic" />-->
-
-
-                <TextView
-                    android:id="@+id/tv_rank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:text="1"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 </RelativeLayout>

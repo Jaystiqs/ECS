@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Epic Chat Stories</string>
     <string name="story_progress_count">storyProgressCount</string>
+    <string name="story_progress_start_point">storyProgressStartPoint</string>
     <string name="timer">countdownTimer</string>
     <string name="options_interstatial_ad">ca-app-pub-8680282998411576/1689170554</string>
     <string name="promo_rewarded_video_ad">ca-app-pub-8680282998411576/5061439356</string>
