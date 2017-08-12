@@ -124,12 +124,12 @@ public class MainActivity extends AppCompatActivity {
             int sPCount = count;
             Log.i(TAG, "isStoryBreakPointHolder: "+isStoryBreakPointHolder);
 
-            for(int i=0; i < storybreakPoints.size(); i++ ){
-                if(count < storybreakPoints.get(i)){
-                    isStoryBreakPointHolder = 1;
-                    Log.i(TAG, "storybreakPoints -"+ storybreakPoints.get(i));
-                }
-            }
+//            for(int i=0; i < storybreakPoints.size(); i++ ){
+//                if(count < storybreakPoints.get(i)){
+//                    isStoryBreakPointHolder = 1;
+//                    Log.i(TAG, "storybreakPoints -"+ storybreakPoints.get(i));
+//                }
+//            }
 
             for( int i= isStoryBreakPointHolder; i<sPCount; i++){
                 count = i;
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0; i < storybreakPoints.size(); i++ ){
                     if(count == storybreakPoints.get(i)){
                         isStoryBreakPoint = true;
-                        isStoryBreakPointHolder = count;
+                        isStoryBreakPointHolder = storybreakPoints.get(i);
                     }
                 }
 
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mEditor.putInt(getString(R.string.story_progress_count), count);
-//        mEditor.putInt(getString(R.string.story_progress_start_point), isStoryBreakPointHolder);
+        mEditor.putInt(getString(R.string.story_progress_start_point), isStoryBreakPointHolder);
         mEditor.commit();
     }
 
