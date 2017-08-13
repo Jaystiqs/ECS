@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
@@ -99,6 +101,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         setContentView(R.layout.activity_promooptions);
         Log.d(TAG, "onCreate:  Started");
 
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 //        ------------------------------Initialize mobile Ad--------------------------------------  //
 
@@ -125,6 +128,7 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
 
         watchAdBtn = (Button) findViewById(R.id.watchAdBtnPromo);
         watchAdBtn.setEnabled(false);
+        watchAdBtn.setTextColor(getResources().getColor(R.color.inactive));
         countdownTimer = (TextView) findViewById(R.id.countdownTimer);
         progressLoader = (ProgressBar) findViewById(R.id.progressLoader);
         progressLoader.setVisibility(View.VISIBLE);
@@ -191,9 +195,10 @@ public class PromoOptionsActivity extends AppCompatActivity implements RewardedV
         mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-                Toast.makeText(getBaseContext(),"AD SUCCESSFULLY LOADED. TAP THE BUTTON TO PLAY!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(),"AD LOADED", Toast.LENGTH_SHORT).show();
                 watchAdBtn.setEnabled(true);
-                adHint.setText("Ad Loaded! Tap the button.");
+                watchAdBtn.setTextColor(getResources().getColor(R.color.white));
+                adHint.setText("Tap the button.");
                 reload.setEnabled(false);
                 reload.setVisibility(View.INVISIBLE);
                 progressLoader.setVisibility(View.INVISIBLE);

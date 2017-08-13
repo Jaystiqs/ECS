@@ -55,7 +55,12 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:$GOOGLE_LIB_VER"
     compile "com.android.support:design:$SUPPORT_LIB_VER"
     compile "com.android.support:cardview-v7:$SUPPORT_LIB_VER"
+//    compile 'com.cocosw:bottomsheet:1.+@aar'
+//    compile 'com.github.mancj:SlideUp-Android:2.2.5'
+//    compile 'ru.ztrap:RxSlideUp2:2.x.x' //optional, for reactive listeners based on RxJava-2
+//    compile 'ru.ztrap:RxSlideUp:1.x.x' //optional, for reactive listeners based on RxJava
     compile 'com.github.bumptech.glide:glide:4.0.0'
+
     testCompile 'junit:junit:4.12'
 }
 

@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c0000000"
+    android:background="#eb212020"
     >
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#363636"
         android:gravity="center_horizontal"
         android:id="@+id/promoPopup"
         android:paddingLeft="20dp"
@@ -51,7 +50,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:textSize="14sp"
-            android:text="It seems you have run out of Epic Chat Stories battery power. Recharge to continue!"
+            android:text="You have run out of Epic Chat Stories battery power. Recharge to continue!"
             android:layout_marginTop="140dp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#dad8d8"/>
@@ -62,7 +61,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="INSTANT RECHARGE"
-            android:textColor="#0ae911"
+            android:textColor="#63be66"
             android:textSize="18sp"
             android:layout_marginTop="210dp"
             android:textStyle="bold"
@@ -72,11 +71,15 @@
 
         <Button
             android:layout_width="200dp"
-            android:layout_height="105dp"
+            android:layout_height="95dp"
             android:text="WATCH  AN AD"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:textColor="#fff"
             android:id="@+id/watchAdBtnPromo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="240dp"/>
+            android:layout_marginTop="250dp"
+            android:background="@drawable/adbutton"/>
 
         <!--<Button-->
             <!--android:id="@+id/watchAdBtnPromo"-->
@@ -144,7 +147,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="SLOW RECHARGE"
-            android:textColor="#df6f1f"
+            android:textColor="#d69161"
             android:textSize="18sp"
             android:layout_marginTop="430dp"
             android:textStyle="bold"

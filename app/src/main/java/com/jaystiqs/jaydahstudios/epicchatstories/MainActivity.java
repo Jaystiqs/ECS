@@ -2,6 +2,7 @@ package com.jaystiqs.jaydahstudios.epicchatstories;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ import com.jaystiqs.jaydahstudios.epicchatstories.adapter.CustomAdapter;
 import com.jaystiqs.jaydahstudios.epicchatstories.database.DatabaseHelper;
 import com.jaystiqs.jaydahstudios.epicchatstories.model.ChatModel;
 import com.jaystiqs.jaydahstudios.epicchatstories.model.StoryInfoModel;
+
+import static com.jaystiqs.jaydahstudios.epicchatstories.R.id.slideView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private List <Integer> adbreakPoints = new ArrayList<>();
     private List <Integer> storybreakPoints = new ArrayList<>();
     private ImageView batteryIconImg;
+//    public SlideUp slideUp;
+//    private View slideView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView settingsIcon;
         TextView storyNameTxt;
+
+//        slideView = findViewById(R.id.slideView);
+//        View dim = findViewById(R.id.dim);
+
 
 
         // Obtain the FirebaseAnalytics instance.
@@ -96,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         int counter = intent.getIntExtra("counter", 0);
         int storyIdFromBook = intent.getIntExtra("storyIdFromBook", 0);
         String updateCount = intent.getStringExtra("updateCount");
+        String rewindEvent = intent.getStringExtra("rewindEvent");
 
         if(storyIdFromBook != 0){
             storyId = storyIdFromBook;
@@ -124,16 +136,9 @@ public class MainActivity extends AppCompatActivity {
             int sPCount = count;
             Log.i(TAG, "isStoryBreakPointHolder: "+isStoryBreakPointHolder);
 
-//            for(int i=0; i < storybreakPoints.size(); i++ ){
-//                if(count < storybreakPoints.get(i)){
-//                    isStoryBreakPointHolder = 1;
-//                    Log.i(TAG, "storybreakPoints -"+ storybreakPoints.get(i));
-//                }
-//            }
-
-            for( int i= isStoryBreakPointHolder; i<sPCount; i++){
+            for( int i= 1; i<sPCount; i++){
                 count = i;
-                getProgress(null);
+                getProgress();
             }
             count++;
         }
@@ -282,8 +287,16 @@ public class MainActivity extends AppCompatActivity {
 
 
             }else{
+//                slideUp = new SlideUp.Builder(slideView)
+//                        .withStartGravity(Gravity.TOP)
+//                        .withLoggingEnabled(true)
+//                        .withStartState(SlideUp.State.HIDDEN)
+//                        .build();
 
-                Toast.makeText(this, "END OF STORY", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, StoriesActivity.class);
+                        startActivity(intent);
+
+               Toast.makeText(this, "END OF STORY", Toast.LENGTH_LONG).show();
             }
         }catch(Exception e) {
             Log.i(TAG, "loadList: "+e.toString());
@@ -291,12 +304,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //For saved progress of shared preference
-    public void getProgress(View view){
+    public void getProgress(){
         Log.d(TAG, "getProgress: Executed");
 
         ChatModel chat = setUpMessage();
+
+        //---------------
+
+        if(lstChat.size() == isStoryBreakPointHolder){
+            lstChat.subList(0, isStoryBreakPointHolder-1).clear();
+        }
+        //---------------
+
         lstChat.add(chat);
 
         final ListView lstView = (ListView)findViewById(R.id.listView);
@@ -329,6 +349,12 @@ public class MainActivity extends AppCompatActivity {
             isStoryBreakPointHolder = holder;
         }
 
+        //------------------For timer-----------------
+        int timer = mPreferences.getInt("Timer", 0);
+        if(timer < 10000){
+            mEditor.putInt("Timer", 1800000);
+            mEditor.commit();
+        }
     }
 
     private void checkBatteryStatus(int count){
@@ -366,5 +392,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
         back_pressed = System.currentTimeMillis();
+
+
+//        Intent intent = new Intent(MainActivity.this, StoriesActivity.class);
+//        startActivity(intent);
     }
 }

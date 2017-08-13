@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +25,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class OptionsMenuActivity extends AppCompatActivity {
     private static final String TAG = "OptionsMenuActivity";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private SharedPreferences tPreferences;
+    private SharedPreferences.Editor tEditor;
 
     Button rewind, share, stories, apps;
     ImageView rewindImg, shareImg, storiesImg, appsImg;
@@ -46,6 +50,10 @@ public class OptionsMenuActivity extends AppCompatActivity {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Initialize shared preferences
+        tPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tEditor = tPreferences.edit();
 
         rewind = (Button)findViewById(R.id.rewindBtn);
         share = (Button)findViewById(R.id.shareBtn);
@@ -98,6 +106,8 @@ public class OptionsMenuActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) { // OK
                                 // do Something
+                                tEditor.putInt("Timer", 1800000);
+                                tEditor.commit();
 
                                 Intent intent = new Intent(OptionsMenuActivity.this, MainActivity.class);
                                 intent.putExtra("counter",1);

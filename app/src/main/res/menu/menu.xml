@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item-->
+        <!--android:id="@+id/share"-->
+        <!--android:title="Rewind"-->
+        <!--android:icon="@drawable/rewind"/>-->
+    <!--<item android:id="@+id/upload" android:title="@string/upload" android:icon="@drawable/perm_group_system_clock"/>-->
+    <!--<item android:id="@+id/call" android:title="@string/call" android:icon="@drawable/perm_group_phone_calls"/>-->
+    <!--<group android:id="@+id/helpgroup">-->
+        <!--<item android:id="@+id/help" android:title="@string/help" android:icon="@drawable/perm_group_system_tools"/>-->
+    <!--</group>-->
+</menu>

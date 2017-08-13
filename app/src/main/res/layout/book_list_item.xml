@@ -66,7 +66,7 @@
                         android:paddingRight="10dp"
                         android:paddingLeft="20dp"
                         android:textColor="#fff"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -83,7 +83,7 @@
                         android:paddingRight="10dp"
                         android:text="Zayn"
                         android:textColor="#fff"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="italic" />
 
                     <TextView
@@ -101,7 +101,7 @@
                         android:id="@+id/angry_btn"
                         android:text="DOUBLE TAP TO READ"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:layout_width="190dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="5dp"
